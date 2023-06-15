@@ -2,19 +2,21 @@ import {useCallback, useEffect, useState} from 'react';
 import useArticleStore from "../stores/articles";
 import {Card, Col, Form, Input, Row, Select, Skeleton} from "antd";
 import AppLayout from "../components/Layout";
+import useUsersStore from "../stores/users";
 
 const ArticlesList = () => {
     const articles = useArticleStore((state) => state.articles);
     const fetchAllArticles = useArticleStore((state) => state.fetchAllArticles);
     const loading = useArticleStore((state) => state.loading);
+    const currentUser = useUsersStore((state) => state.currentUser)
     const [form] = Form.useForm()
-    const [categoryOptions, setCategoryOptions] = useState([]);
 
     const categoryOptionsMap = {
         newsapi: ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology'],
         nytimes: [],
         guardian: ["about", "animals-farmed", "artanddesign", "australia-news", "better-business", "books", "business", "business-to-business", "cardiff", "childrens-books-site", "cities"],
     };
+    const [categoryOptions, setCategoryOptions] = useState(categoryOptionsMap[currentUser.preferences?.source]||[]);
 
     const handleSourceChange = async (value) => {
         const options = categoryOptionsMap[value] || [];
@@ -66,9 +68,17 @@ const ArticlesList = () => {
     }
     return (
         <AppLayout>
-            <Form form={form} layout={"vertical"} onValuesChange={handleChange}>
+            <Form
+                form={form}
+                layout={"vertical"}
+                onValuesChange={handleChange}
+                initialValues={{
+                    "source":currentUser.preferences?.source,
+                    "category":currentUser.preferences?.category,
+                }}
+            >
                 <div className="tw-flex tw-justify-end tw-py-4">
-                    <Form.Item name={"source"} label={"Source"} className={"tw-mx-3"} initialValue={'newsapi'}>
+                    <Form.Item name={"source"} label={"Source"} className={"tw-mx-3"}>
                         <Select onChange={handleSourceChange} size={"large"}>
                             <Select.Option value={'newsapi'}>News API</Select.Option>
                             <Select.Option value={'nytimes'}>New York Times</Select.Option>
@@ -79,7 +89,7 @@ const ArticlesList = () => {
                         <Select className={"tw-min-w-[100px]"} size={"large"} >
                             {categoryOptions.map((category) => (
                                 <Select.Option key={category} value={category} className={"tw-capitalize"}>
-                                    {category}
+                                    {category?.replaceAll('-',' ')}
                                 </Select.Option>
                             ))}
                         </Select>

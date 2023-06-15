@@ -25,7 +25,7 @@ const RegisterPage = () => {
     const onFinish = async (values) => {
         try {
             await signup(values);
-            navigate('/')
+            window.location.href = '/'
         } catch (error) {
             const {errors} = error.response.data
             form.setFields(formatErrors(errors))

@@ -21,6 +21,10 @@ class AuthController extends Controller
             return response()->json([
                 'access_token' => $token,
                 'token_type' => 'Bearer',
+                'preferences' => [
+                    'source' => $user->preference->preferred_sources,
+                    'category' => $user->preference->preferred_categories,
+                ]
             ]);
         }
 
@@ -44,17 +48,20 @@ class AuthController extends Controller
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
         ]);
-        UserPreference::create([
+        $preference = UserPreference::create([
             'preferred_sources' => $request->input('preferred_source'),
             'preferred_categories' => $request->input('preferred_category'),
-            'user_id'=>$user->id
+            'user_id' => $user->id
         ]);
-
+        $preference = $preference->toArray();
         $token = $user->createToken('authToken')->plainTextToken;
-
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'preferences' => [
+                'source' => $preference['preferred_sources'],
+                'category' => $preference['preferred_categories'],
+            ]
         ]);
     }
 
