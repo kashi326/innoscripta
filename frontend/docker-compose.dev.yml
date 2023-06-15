@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: app-dev
+    image: app-dev
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./src:/app/src
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "3000:5173"
+    networks:
+      - sail
+
+networks:
+  sail:
+    driver: bridge
