@@ -8,7 +8,7 @@ const useArticleStore = create((set, get) => ({
     cancelToken: null,
     loading: true,
     getToken: useUsersStore.getState().getToken(),
-    fetchAllArticles: async (queryParams) => {
+    fetchAllArticles: async (queryParams={}) => {
         set({loading: true})
         const state = get();
         if (state.cancelToken && state.cancelToken?.cancel) {
