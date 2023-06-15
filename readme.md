@@ -44,19 +44,20 @@ Before you begin, make sure you have the following software installed on your ma
    ```
    cp .env.example .env
    ```
+5. Set keys for News API
 
-5. Generate a unique application key by running the following command:
+6. Generate a unique application key by running the following command:
 
    ```
    php artisan key:generate
    ```
 
-6. Run sail using the following command:
+7. Run sail using the following command:
 
    ```
    ./vendor/bin/sail up
    ```
-7. run migrations
+8. run migrations
 
    ```
    ./vendor/bin/sail artisan migrate
