@@ -1,6 +1,6 @@
 # EasyBreezyArticle Installation Guide
 
-This guide provides step-by-step instructions to help you set up an existing Vue.js and Laravel project on your local machine. Follow the instructions below to get started with these frameworks.
+This guide provides step-by-step instructions to help you set up an existing React and Laravel project on your local machine. Follow the instructions below to get started with these frameworks.
 
 ## Prerequisites
 
